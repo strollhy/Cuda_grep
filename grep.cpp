@@ -8,10 +8,10 @@
 
 #define SIZE 1000
 
-int NUM;
-int buff_len;
-int word_len;
-int segm_no;
+unsigned long NUM;
+unsigned long long buff_len;
+unsigned int word_len;
+unsigned long segm_no;
 
 using namespace std;
 
@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
 {
 	char* buffer = (char*) malloc(MAXNUM * SIZE * sizeof(char));	
 	char* word = argv[1];
+	char* file = argv[2];
 	
 	// For lines
 	buff_len = 0;
@@ -29,7 +30,7 @@ int main(int argc, char* argv[])
 	int line_len[MAXNUM];
 
 	/* Read file line by line */	
-	ifstream infile("./data/test.xml");
+	ifstream infile(file);
 	string sLine;
 	
 	while(!infile.eof())

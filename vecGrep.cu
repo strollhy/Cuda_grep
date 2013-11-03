@@ -69,9 +69,9 @@ void grep (char* buffer, char* word,
         cudaMemcpy(result, devPtrFind, list_size, cudaMemcpyDeviceToHost);
 
 	// For display
-	for(int i=0; i<NUM; i++) printf("%d,", result[i]);
-	printf("\b \b\n");
-      	
+	//for(int i=0; i<NUM; i++) printf("%d,", result[i]);
+	//printf("\b \b\n");
+      	/*	
 	for(int i=0; i<NUM; i++)
 		if(result[i])
 		{ 
@@ -81,7 +81,8 @@ void grep (char* buffer, char* word,
 				printf("%c", buffer[p+j]);
 			printf("\n");
 		}
-	printf(" %d ###################\n", segm_no);
+	*/
+	//printf(" %d ###################\n", segm_no);
 	
         cudaFree(devPtrLine);
         cudaFree(devPtrWord);
