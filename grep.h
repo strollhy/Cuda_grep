@@ -2,7 +2,7 @@
 #ifndef _GREP_H_
 #define _GREP_h_
 
-#define MAXNUM 3276800			//Maximum number of lines to be loaded everytime
+#define MAXNUM 6553600			//Maximum number of lines to be loaded everytime
 
 extern unsigned long NUM; 		//Number of lines
 extern unsigned long buff_len;		//Buffer length
