@@ -1,4 +1,12 @@
 
+/**
+ * Performance test 1
+ * pre-allocate GPU memory
+ * load large chunks of data to GPU, and process everytime
+ * 	
+ */
+
+
 #include<fstream>
 #include<iostream>
 #include<string>
@@ -9,7 +17,7 @@
 #define SIZE 1000
 
 unsigned long NUM;
-unsigned long long buff_len;
+unsigned long buff_len;
 unsigned int word_len;
 unsigned long segm_no;
 
@@ -17,7 +25,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	char* buffer = (char*) malloc(MAXNUM * SIZE * sizeof(char));	
+	char* buffer = (char*) malloc((long) MAXNUM * SIZE * sizeof(char));
 	char* word = argv[1];
 	char* file = argv[2];
 	
@@ -37,19 +45,23 @@ int main(int argc, char* argv[])
 	{	
 		// Load line
 		getline(infile, sLine);
-		NUM++;
 
 		// Line start point & length
-		line_len[line_indx] = sLine.length();
+		unsigned int slen = sLine.length(); // not including null terminator
+		
+		line_len[line_indx] = slen;
 		line_pos[line_indx] = buff_len;
-		buff_len += sLine.length();
-		line_indx++;
 
-		// Append line to buffer
-		strcat(buffer, (char*) sLine.c_str()); 
-	
+			
+		//Append line to buffer, using strcat is very time consuming
+		memmove(buffer+buff_len, (char*) sLine.c_str(), sizeof(char) * slen);
+		buff_len += slen;
+		line_indx++;
+		NUM++;
+
+
 		// If bUffer full
-		if(NUM >= MAXNUM)
+		if(NUM >= MAXNUM | infile.eof())
 		{
 			// Dump buffer to GPU for processing
 			grep(buffer, word, line_pos, line_len);
@@ -59,10 +71,6 @@ int main(int argc, char* argv[])
 			buff_len = 0;
 			line_indx = 0;
 			segm_no++;
-
-			// Flush buffer
-			free(buffer);
-			buffer = (char*) malloc(MAXNUM * SIZE * sizeof(char));	
 		}
 	}
 

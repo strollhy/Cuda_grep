@@ -4,16 +4,16 @@ __global__ void vecGrep(char* buffer,
 		        int* line_pos, int* line_len, 
 		        int* find)
 {
-         // threadIdx.x is a built-in variable provided by CUDA at runtime
+        // threadIdx.x is a built-in variable provided by CUDA at runtime
         int indx = threadIdx.x;
 	int pos = line_pos[indx];
 	int len = line_len[indx];
-
+	
 	for(int i=0; i<len; i++)
 	{
 		find[indx] = 1;
 
-		for(int j=0; j< word_len[0]; j++) 
+		for(int j=0; j<*word_len; j++) 
 		{
         		if (buffer[pos+i+j] != word[j]) 
 			{
@@ -71,7 +71,8 @@ void grep (char* buffer, char* word,
 	// For display
 	//for(int i=0; i<NUM; i++) printf("%d,", result[i]);
 	//printf("\b \b\n");
-      	/*	
+      	
+	/*	
 	for(int i=0; i<NUM; i++)
 		if(result[i])
 		{ 
@@ -85,7 +86,10 @@ void grep (char* buffer, char* word,
 	//printf(" %d ###################\n", segm_no);
 	
         cudaFree(devPtrLine);
+	cudaFree(devPtrWlen);
         cudaFree(devPtrWord);
         cudaFree(devPtrFind);
+	cudaFree(devPtrPos);
+	cudaFree(devPtrLen);
 }
 
